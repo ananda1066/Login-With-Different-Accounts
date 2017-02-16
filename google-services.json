@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "248734554910",
+    "project_id": "login-with-different-accounts"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248734554910:android:52f0ba99ce3d8519",
+        "android_client_info": {
+          "package_name": "com.example.www.loginwithdifferentaccounts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248734554910-0ojvm2rk8gn38j21c1p4pujca4dno694.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.www.loginwithdifferentaccounts",
+            "certificate_hash": "A16BD4121337B77048DE2D67F00765ED2CD71BDF"
+          }
+        },
+        {
+          "client_id": "248734554910-2o3277h604mot1u39du5usr6nlaaacb0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwBzGT6qlXwKSa77oMokx7WX4gkNcmtc4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

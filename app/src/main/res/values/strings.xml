@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Login with Different Accounts</string>
+
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="signed_out">Signed out</string>
+    <string name="loading">Loading…</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+
+    <string name="facebook_app_id">1097429730373419</string>
+    <string name="fb_login_protocol_scheme">fb1097429730373419</string>
+    <string name="login_cancelled">Login attempt cancelled.</string>
+    <string name="login_error">Login attempt failed.</string>
+</resources>
