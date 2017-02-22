@@ -118,10 +118,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setSize(SignInButton.SIZE_STANDARD); //sets size of google sign in button
         signInButton.setScopes(gso.getScopeArray());
 
-        try {
+        //gets key hash for app to register with Google/FB
+        /*try { 
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.example.www.kodejoy",
                     PackageManager.GET_SIGNATURES);
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         } catch (NoSuchAlgorithmException e) {
 
-        }
+        }*/
     }
 
     //creates new status callback to determine whether Facebook session opened or not
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     };
 
+    //checks if logged in to Facebook
     public boolean isLoggedIn() {
         Session session = Session.getActiveSession();
         return (session != null && session.isOpened());
@@ -161,89 +163,98 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
+    //allows to sign in to either Google or Facebook
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.sign_in_button:
+            case R.id.sign_in_button: //sign in through Google
                 signIn();
                 break;
-            case R.id.sign_out_button:
+            case R.id.sign_out_button: //sign out of Google
                 signOut();
                 break;
-            case R.id.disconnect_button:
+            case R.id.disconnect_button: //disconnect from Google, meaning signed out on all devices
                 revokeAccess();
                 break;
-            case R.id.log_in_button:
+            case R.id.log_in_button: //sign into Facebook
                 signInToFacebook();
                 break;
         }
     }
 
+   //signs in to Facebook and checks if already logged in
    private void signInToFacebook(){
-        findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+        findViewById(R.id.sign_in_button).setVisibility(View.GONE); 
         loginButton.setReadPermissions(Arrays.asList("email"));
         loginButton.setUserInfoChangedCallback(new UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
                 if(user != null){
-                    updateFacebookUI(true);
+                    updateFacebookUI(true); //log in if no user logged in
                     //username.setText("You are currently logged in as " + user.getName());
                 }
                 else{
                     //username.setTextColor(Color.WHITE);
-                   updateFacebookUI(false);
+                   updateFacebookUI(false); //already logged in
                     findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
                 }
             }
         });
     }
 
+    //resumes current Facebook session if already logged in
     @Override
     public void onResume(){
         super.onResume();
         uiLifecycleHelper.onResume();
     }
 
+    //pauses current Facebook session
     @Override
     public void onPause(){
         super.onPause();
         uiLifecycleHelper.onPause();
     }
 
+    //leaves current Facebook session
     @Override
     public void onDestroy(){
         super.onDestroy();
         uiLifecycleHelper.onDestroy();
     }
 
+    //saves current Facebook session
     @Override
     public void onSaveInstanceState(Bundle savedState){
         super.onSaveInstanceState(savedState);
         uiLifecycleHelper.onSaveInstanceState(savedState);
     }
 
+    //sign in to Google account
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, RC_SIGN_IN); //checks if valid user
     }
 
+    //allows for sign in with either Google or Facebook
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data); 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) { //log in with Google
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        } else{
+            handleSignInResult(result); 
+        } else{ //log in with Facebook
             uiLifecycleHelper.onActivityResult(requestCode, resultCode, data);
         }
     }
 
+    //handles attempt to sign in through Google
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
+        if (result.isSuccess()) { 
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             if(acct.getDisplayName() != null){
@@ -260,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
+    //checks if user already logged in when first open app
     @Override
     public void onStart() {
         super.onStart();
@@ -286,6 +298,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    //Google sign out
     // [START signOut]
     private void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -300,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
     // [END signOut]
 
+    //Google disconnect
     // [START revokeAccess]
     private void revokeAccess() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
@@ -313,10 +327,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 });
     }
     // [END revokeAccess]
-
+    
     private void updateFacebookUI(boolean signedIn){
         if(signedIn) {
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.sign_in_button).setVisibility(View.GONE); //hides sign in button
         }
         else{
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
@@ -325,14 +339,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
+    //update UI if signed in with Google    
     private void updateUI(boolean signedIn) {
         if (signedIn) {
-           loginButton.setVisibility(View.GONE);
+            //hide all login buttons and show sign out buttons
+            loginButton.setVisibility(View.GONE); 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
             mStatusTextView.setTextColor(Color.BLACK);
         } else {
-
+            //show sign in buttons and hide sign out buttons
             mStatusTextView.setTextColor(Color.WHITE);
             mStatusTextView.setText(R.string.signed_out);
 
